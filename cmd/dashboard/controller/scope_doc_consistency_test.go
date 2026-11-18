@@ -32,6 +32,18 @@ type scopedRoute struct {
 
 func canonicalRoutes() []scopedRoute {
 	return []scopedRoute{
+		{"GET", "/api/v1/asset", "nezha:asset:read"},
+		{"GET", "/api/v1/asset/{id}", "nezha:asset:read"},
+		{"GET", "/api/v1/asset/costs", "nezha:asset:read"},
+		{"GET", "/api/v1/asset/{id}/history", "nezha:asset:read"},
+		{"POST", "/api/v1/asset", "nezha:asset:write"},
+		{"PUT", "/api/v1/asset/{id}", "nezha:asset:write"},
+		{"POST", "/api/v1/asset/{id}/renewals", "nezha:asset:write"},
+		{"POST", "/api/v1/asset/import/{id}", "nezha:asset:write"},
+		{"DELETE", "/api/v1/asset/{id}", "nezha:asset:delete"},
+		{"GET", "/api/v1/asset/cloud", "nezha:cloud:read"},
+		{"POST", "/api/v1/asset/cloud/{provider}/{account}/sync", "nezha:cloud:sync"},
+
 		{"GET", "/api/v1/server", "nezha:inventory:read"},
 		{"PATCH", "/api/v1/server/{id}", "nezha:server:write"},
 		{"GET", "/api/v1/server/config/{id}", "nezha:server:write"},

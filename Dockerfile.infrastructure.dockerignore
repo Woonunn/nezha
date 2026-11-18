@@ -1,0 +1,6 @@
+.git
+dist
+cmd/dashboard/*-dist
+cmd/dashboard/docs
+cmd/dashboard/data
+data

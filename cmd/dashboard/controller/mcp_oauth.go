@@ -33,7 +33,7 @@ const (
 	mcpOAuthGrantContextKey = "mcp_oauth_grant"
 )
 
-var mcpOAuthScopes = []string{model.ScopeInventoryRead, model.ScopeServerRead, model.ScopeServerWrite, model.ScopeServerDelete, model.ScopeServerExec}
+var mcpOAuthScopes = []string{model.ScopeAssetRead, model.ScopeInventoryRead, model.ScopeServerRead, model.ScopeServerWrite, model.ScopeServerDelete, model.ScopeServerExec}
 var mcpOAuthPublicLimiter = newMCPRateLimiter(20, 300)
 var mcpOAuthRegistrationLimiter = newMCPRateLimiter(2, 20)
 var mcpOAuthMutationMu sync.Mutex

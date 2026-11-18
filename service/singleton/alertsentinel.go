@@ -179,11 +179,11 @@ func AlertSentinelStart() {
 	}
 	alertDeliveries = make(map[uint64]map[uint64]*alertDeliveryEntry)
 	alertDeliveryMu.Unlock()
+	AlertsLock.Lock()
 	alertsStore = make(map[uint64]map[uint64][]model.TimedAlertPoint)
 	alertsPrevState = make(map[uint64]map[uint64]uint8)
 	alertsLastMetricSeq = make(map[uint64]map[uint64]uint64)
 	AlertsCycleTransferStatsStore = make(map[uint64]*model.CycleTransferStats)
-	AlertsLock.Lock()
 	if err := DB.Find(&Alerts).Error; err != nil {
 		panic(err)
 	}
@@ -375,4 +375,23 @@ func checkStatusForServer(alert *model.AlertRule, server *model.Server) {
 		}
 		alertsPrevState[alert.ID][server.ID] = _RuleCheckPass
 	}
+}
+
+// ActiveAlertCounts returns the current incidents visible to a user. The
+// evaluator updates state while it holds AlertsLock for reading.
+func ActiveAlertCounts(uid uint64, admin bool) map[uint64]int {
+	AlertsLock.Lock()
+	defer AlertsLock.Unlock()
+	out := make(map[uint64]int)
+	for _, alert := range Alerts {
+		if alert == nil || !alert.Enabled() || (!admin && alert.UserID != uid) {
+			continue
+		}
+		for id, state := range alertsPrevState[alert.ID] {
+			if state == _RuleCheckFail {
+				out[id]++
+			}
+		}
+	}
+	return out
 }

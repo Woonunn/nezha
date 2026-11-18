@@ -43,6 +43,12 @@ const (
 	ScopeInventoryRead   = "nezha:inventory:read"
 	ScopeInventoryDelete = "nezha:inventory:delete"
 
+	ScopeAssetRead   = "nezha:asset:read"
+	ScopeAssetWrite  = "nezha:asset:write"
+	ScopeAssetDelete = "nezha:asset:delete"
+	ScopeCloudRead   = "nezha:cloud:read"
+	ScopeCloudSync   = "nezha:cloud:sync"
+
 	ScopeServerRead   = "nezha:server:read"
 	ScopeServerWrite  = "nezha:server:write"
 	ScopeServerDelete = "nezha:server:delete"
@@ -86,6 +92,7 @@ const (
 
 var AllScopes = []string{
 	ScopeInventoryRead, ScopeInventoryDelete,
+	ScopeAssetRead, ScopeAssetWrite, ScopeAssetDelete,
 	ScopeServerRead, ScopeServerWrite, ScopeServerDelete, ScopeServerExec,
 	ScopeServiceRead, ScopeServiceWrite, ScopeServiceDelete,
 	ScopeAlertRuleRead, ScopeAlertRuleWrite, ScopeAlertRuleDelete,
@@ -108,7 +115,7 @@ var AllScopes = []string{
 	"nezha:transfer:*",
 }
 
-var AdminOnlyScopes = []string{ScopeNezhaAll, ScopeAdminAll}
+var AdminOnlyScopes = []string{ScopeNezhaAll, ScopeAdminAll, ScopeCloudRead, ScopeCloudSync}
 
 // legacyMCPReadOnlyRewrite 列出仍允许 createAPIToken 入口重写为 nezha:* 的旧 scope。
 // 只有只读/exec 类被接受；write/delete/wildcard 一律拒签——保留映射等于扩权。

@@ -271,8 +271,11 @@ func buildToolDescriptors() []mcpToolDescriptor {
 // the conservative write/destructive defaults in ChatGPT and other clients.
 func mcpToolAnnotations(name string) map[string]bool {
 	switch name {
-	case "meta.whoami", "server.list", "server.get", "fs.list", "fs.read":
+	case "meta.whoami", "server.list", "server.get", "fs.list", "fs.read",
+		"asset.list", "asset.get", "asset.expiring", "asset.costs", "cloud.status":
 		return map[string]bool{"readOnlyHint": true, "destructiveHint": false}
+	case "cloud.sync":
+		return map[string]bool{"readOnlyHint": false, "destructiveHint": false}
 	default:
 		return map[string]bool{"readOnlyHint": false, "destructiveHint": true}
 	}

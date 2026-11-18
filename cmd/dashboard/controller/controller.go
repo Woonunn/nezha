@@ -148,6 +148,20 @@ func routers(r *gin.Engine, frontendDist fs.FS) {
 	auth.GET("/ws/terminal/:id", restScopeMiddleware(model.ScopeServerExec), commonHandler(terminalStream))
 	auth.POST("/file", restScopeAllOf(model.ScopeServerRead, model.ScopeServerWrite, model.ScopeServerDelete), commonHandler(createFM))
 	auth.GET("/ws/file/:id", restScopeAllOf(model.ScopeServerRead, model.ScopeServerWrite, model.ScopeServerDelete), commonHandler(fmStream))
+	assetRoutes := auth.Group("/asset", func(c *gin.Context) {
+		c.Header("Cache-Control", "no-store")
+	})
+	assetRoutes.GET("", restScopeMiddleware(model.ScopeAssetRead), commonHandler(listAssets))
+	assetRoutes.GET("/cloud", restScopeMiddleware(model.ScopeCloudRead), adminHandler(assetCloudStatus))
+	assetRoutes.POST("/cloud/:provider/:account/sync", restScopeMiddleware(model.ScopeCloudSync), adminHandler(triggerAssetCloudSync))
+	assetRoutes.GET("/costs", restScopeMiddleware(model.ScopeAssetRead), commonHandler(assetCosts))
+	assetRoutes.GET("/:id", restScopeMiddleware(model.ScopeAssetRead), commonHandler(getAsset))
+	assetRoutes.GET("/:id/history", restScopeMiddleware(model.ScopeAssetRead), commonHandler(assetHistory))
+	assetRoutes.POST("", restScopeMiddleware(model.ScopeAssetWrite), commonHandler(createAsset))
+	assetRoutes.PUT("/:id", restScopeMiddleware(model.ScopeAssetWrite), commonHandler(updateAsset))
+	assetRoutes.POST("/:id/renewals", restScopeMiddleware(model.ScopeAssetWrite), commonHandler(addAssetRenewal))
+	assetRoutes.POST("/import/:id", restScopeMiddleware(model.ScopeAssetWrite), commonHandler(importAsset))
+	assetRoutes.DELETE("/:id", restScopeMiddleware(model.ScopeAssetDelete), commonHandler(deleteAsset))
 	auth.GET("/server", restScopeMiddleware(model.ScopeInventoryRead), listHandler(listServer))
 	auth.PATCH("/server/:id", restScopeMiddleware(model.ScopeServerWrite), commonHandler(updateServer))
 	auth.GET("/server/config/:id", restScopeMiddleware(serverConfigSensitiveScope()), commonHandler(getServerConfig))
@@ -465,6 +479,7 @@ func fallbackToFrontend(frontendDist fs.FS) func(*gin.Context) {
 		// backend frontend
 		regexp.MustCompile(`^/dashboard/$`),
 		regexp.MustCompile(`^/dashboard/login$`),
+		regexp.MustCompile(`^/dashboard/assets$`),
 		regexp.MustCompile(`^/dashboard/service$`),
 		regexp.MustCompile(`^/dashboard/cron$`),
 		regexp.MustCompile(`^/dashboard/notification$`),

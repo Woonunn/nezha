@@ -11,9 +11,9 @@
 // # Scope naming
 //
 //	nezha:{resource}:{verb}
-//	  resource: inventory | server | service | alertrule | cron | ddns | nat |
+//	  resource: inventory | asset | cloud | server | service | alertrule | cron | ddns | nat |
 //	            notification | notification-group | transfer | admin
-//	  verb:     read | write | delete | exec
+//	  verb:     read | write | delete | exec | sync
 //
 //	inventory vs server：inventory 管“能看到/能删哪些机器”（列出 server /
 //	server-group、删除 server / server-group、MCP server.list）；server 管对
@@ -36,7 +36,26 @@
 //	fs.download_url       nezha:server:read
 //	fs.upload_url         nezha:server:write
 //
+//	asset.list             nezha:asset:read
+//	asset.get              nezha:asset:read
+//	asset.expiring         nezha:asset:read
+//	asset.costs            nezha:asset:read
+//	cloud.status           nezha:cloud:read
+//	cloud.sync             nezha:cloud:sync
+//
 // # REST endpoints (PAT required scope)
+//
+//	GET    /api/v1/asset                                        nezha:asset:read
+//	GET    /api/v1/asset/{id}                                   nezha:asset:read
+//	GET    /api/v1/asset/costs                                  nezha:asset:read
+//	GET    /api/v1/asset/{id}/history                           nezha:asset:read
+//	POST   /api/v1/asset                                        nezha:asset:write
+//	PUT    /api/v1/asset/{id}                                   nezha:asset:write
+//	POST   /api/v1/asset/{id}/renewals                          nezha:asset:write
+//	POST   /api/v1/asset/import/{id}                            nezha:asset:write
+//	DELETE /api/v1/asset/{id}                                   nezha:asset:delete
+//	GET    /api/v1/asset/cloud                                  nezha:cloud:read
+//	POST   /api/v1/asset/cloud/{provider}/{account}/sync        nezha:cloud:sync
 //
 //	GET    /api/v1/server                            nezha:inventory:read
 //	PATCH  /api/v1/server/{id}                       nezha:server:write

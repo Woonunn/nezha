@@ -25,6 +25,7 @@ import (
 	"github.com/nezhahq/nezha/pkg/idcodec"
 	"github.com/nezhahq/nezha/pkg/utils"
 	"github.com/nezhahq/nezha/proto"
+	"github.com/nezhahq/nezha/service/asset"
 	"github.com/nezhahq/nezha/service/singleton"
 )
 
@@ -84,6 +85,20 @@ func initSystem(bus chan<- *model.Service) error {
 
 	// 在线会话保留清理：超出后台设置的统计窗口后删除
 	if _, err := singleton.CronShared.AddFunc("0 30 4 * * *", singleton.PruneOnlineSessions); err != nil {
+		return err
+	}
+
+	if _, err := singleton.CronShared.AddFunc("0 10 * * * *", singleton.SendAssetExpiryReminders); err != nil {
+		return err
+	}
+
+	cloudManager, err := asset.NewCloudManager(singleton.DB, os.Getenv("NZ_ASSET_CLOUD_CONFIG"))
+	singleton.AssetCloud = cloudManager
+	if err != nil {
+		singleton.AssetCloudConfigError = err.Error()
+		log.Printf("NEZHA>> Cloud asset configuration: %v", err)
+	}
+	if _, err := singleton.CronShared.AddFunc("0 */15 * * * *", singleton.AssetCloud.RunDue); err != nil {
 		return err
 	}
 
@@ -174,6 +189,7 @@ func main() {
 	})
 	go rpc.DispatchTask(serviceSentinelDispatchBus)
 	go singleton.AlertSentinelStart()
+	go singleton.AssetCloud.RunDue()
 
 	grpcHandler := rpc.ServeRPC()
 	httpHandler := controller.ServeWeb(frontendDist)

@@ -96,7 +96,8 @@ func InitDBFromPath(path string) error {
 		model.NAT{}, model.DDNSProfile{}, model.NotificationGroupNotification{},
 		model.WAF{}, model.Oauth2Bind{}, model.ServerTransfer{}, model.JWTSession{},
 		model.APIToken{}, model.MCPAuditLog{}, model.OnlineSession{},
-		model.MCPOAuthClient{}, model.MCPOAuthCode{}, model.MCPOAuthGrant{})
+		model.MCPOAuthClient{}, model.MCPOAuthCode{}, model.MCPOAuthGrant{},
+		model.Asset{}, model.AssetRenewal{}, model.AssetBill{}, model.AssetReminder{}, model.AssetSyncStatus{})
 	if err != nil {
 		return err
 	}
