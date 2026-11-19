@@ -38,3 +38,7 @@ for i in $(seq 0 $(("$count"-1))); do
     download_and_extract "$repository" "$version" "$ROOT_DIR/cmd/dashboard/$path"
   fi
 done
+
+if [[ -x "$ROOT_DIR/cmd/dashboard/user-overlay/apply.sh" && -f "$ROOT_DIR/cmd/dashboard/user-dist/index.html" ]]; then
+  bash "$ROOT_DIR/cmd/dashboard/user-overlay/apply.sh" "$ROOT_DIR/cmd/dashboard/user-dist"
+fi

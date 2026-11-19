@@ -1,0 +1,352 @@
+/* ZHT Aero Telemetry Theme & UAV Engineering Blueprint Layer for Nezha User Frontend */
+
+:root {
+    --background: 216 33% 97.5%;
+    --foreground: 224 32% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 224 32% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 224 32% 11%;
+    --primary: 215 90% 47%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 216 24% 93.5%;
+    --secondary-foreground: 224 28% 16%;
+    --muted: 216 24% 94%;
+    --muted-foreground: 218 14% 43%;
+    --accent: 215 28% 92.5%;
+    --accent-foreground: 224 32% 12%;
+    --border: 218 20% 88.5%;
+    --input: 218 20% 85%;
+    --ring: 215 90% 47%;
+}
+
+.dark {
+    --background: 224 28% 5.5%;
+    --foreground: 214 32% 95%;
+    --card: 223 24% 8.5%;
+    --card-foreground: 214 32% 95%;
+    --popover: 224 25% 10%;
+    --popover-foreground: 214 32% 95%;
+    --primary: 214 90% 52%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 222 20% 13.5%;
+    --secondary-foreground: 214 28% 92%;
+    --muted: 222 20% 12%;
+    --muted-foreground: 217 16% 62%;
+    --accent: 222 22% 15.5%;
+    --accent-foreground: 214 32% 96%;
+    --border: 222 18% 16.5%;
+    --input: 222 18% 19%;
+    --ring: 212 92% 56%;
+}
+
+html,
+body {
+    background-color: hsl(var(--background)) !important;
+    font-family:
+        "Plus Jakarta Sans", "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "PingFang SC",
+        "Hiragino Sans GB", "Microsoft YaHei", "Segoe UI", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}
+
+#root {
+    position: relative;
+    z-index: 1;
+}
+
+#root > div,
+#root .app-shell,
+.dark #root > div {
+    background-color: transparent !important;
+}
+
+/* ==========================================================================
+   Header Brand Lockup: ZHT Aero Logo | 中航通服务器监控
+   ========================================================================== */
+.header-top > section:first-child {
+    gap: 0 !important;
+    font-weight: 600 !important;
+    letter-spacing: -0.015em;
+    color: hsl(var(--foreground));
+}
+
+.header-logo {
+    margin-right: 11px !important;
+    padding-right: 11px !important;
+    border-right: 1px solid hsl(var(--border) / 0.95);
+    display: inline-flex !important;
+    align-items: center !important;
+}
+
+.header-logo img {
+    height: 22px !important;
+    width: auto !important;
+    max-width: none !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    object-fit: contain !important;
+    filter: brightness(0);
+    opacity: 0.9;
+    transition: opacity 180ms ease;
+}
+
+.dark .header-logo img {
+    filter: brightness(1);
+    opacity: 1;
+}
+
+/* Hide redundant secondary title separator & duplicated desc label in top-left */
+.header-top > section:first-child > [data-orientation="vertical"],
+.header-top > section:first-child > p {
+    display: none !important;
+}
+
+/* Hide nezha-dash theme attribution in footer */
+footer section:has(a[href*="nezha-dash"]) {
+    display: none !important;
+}
+
+/* ==========================================================================
+   Obsidian Glass Telemetry Cards
+   ========================================================================== */
+.server-overview > div {
+    position: relative;
+    overflow: visible !important;
+    background-color: hsl(var(--card) / 0.86) !important;
+    border-color: hsl(var(--border) / 0.85) !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+    transition:
+        border-color 180ms ease,
+        box-shadow 180ms ease,
+        transform 180ms ease;
+}
+
+.dark .server-overview > div {
+    background-color: hsl(var(--card) / 0.84) !important;
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.045),
+        0 12px 32px -18px rgba(0, 0, 0, 0.7);
+}
+
+.server-overview > div:hover {
+    border-color: rgba(56, 189, 248, 0.42) !important;
+}
+
+.server-card-list > *,
+.server-inline-list > * {
+    background-color: hsl(var(--card) / 0.86) !important;
+    border-color: hsl(var(--border) / 0.82) !important;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition:
+        border-color 180ms ease,
+        box-shadow 180ms ease,
+        background-color 180ms ease;
+}
+
+.dark .server-card-list > *,
+.dark .server-inline-list > * {
+    background-color: hsl(var(--card) / 0.82) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.035);
+}
+
+.server-card-list > *:hover,
+.server-inline-list > *:hover {
+    border-color: rgba(56, 189, 248, 0.4) !important;
+}
+
+/* ==========================================================================
+   Perched Isometric NAGA-X4 Hovering Drone on Network Card
+   ========================================================================== */
+.zht-perched-uav {
+    position: absolute;
+    right: 6px;
+    top: -92px;
+    z-index: 30;
+    width: 112px;
+    pointer-events: none;
+    user-select: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: opacity 220ms ease;
+}
+
+.server-overview > div:hover .zht-perched-uav {
+    opacity: 0.42;
+}
+
+.zht-perched-uav-img {
+    display: block;
+    width: 100%;
+    height: auto;
+    filter: hue-rotate(8deg) saturate(1.25) brightness(0.42) contrast(1.18)
+        drop-shadow(0 8px 12px rgba(14, 116, 144, 0.2));
+    animation: zht-uav-hover 4.6s ease-in-out infinite;
+    will-change: transform;
+}
+
+.dark .zht-perched-uav-img {
+    filter: drop-shadow(0 8px 16px rgba(56, 189, 248, 0.28)) brightness(1.06);
+}
+
+.zht-perched-uav-pad {
+    width: 68px;
+    height: 2px;
+    margin-top: -4px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, transparent, rgba(14, 165, 233, 0.85), transparent);
+    box-shadow: 0 0 12px 1px rgba(56, 189, 248, 0.45);
+    animation: zht-pad-breathe 4.6s ease-in-out infinite;
+}
+
+@media (max-width: 639px) {
+    .zht-perched-uav {
+        width: 82px;
+        top: -68px;
+        right: 4px;
+    }
+}
+
+/* ==========================================================================
+   Clean Aerospace Backdrop + Left-Flank KEEL MAX Engineering Line Drawing
+   ========================================================================== */
+#zht-uav-stage {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+    user-select: none;
+}
+
+.zht-uav-atmosphere {
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(ellipse 68% 360px at 50% -70px, rgba(14, 165, 233, 0.085), transparent 72%),
+        radial-gradient(circle 480px at 6% 42%, rgba(56, 189, 248, 0.055), transparent 70%);
+}
+
+.dark .zht-uav-atmosphere {
+    background:
+        radial-gradient(ellipse 72% 380px at 50% -90px, rgba(14, 165, 233, 0.145), transparent 72%),
+        radial-gradient(circle 520px at 6% 44%, rgba(56, 189, 248, 0.08), transparent 68%);
+}
+
+.zht-uav-grid {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(14, 116, 144, 0.14) 1px, transparent 1px);
+    background-size: 28px 28px;
+    mask-image: radial-gradient(ellipse 64% 68% at 50% 48%, transparent 34%, rgba(0, 0, 0, 0.65) 100%);
+    -webkit-mask-image: radial-gradient(
+        ellipse 64% 68% at 50% 48%,
+        transparent 34%,
+        rgba(0, 0, 0, 0.65) 100%
+    );
+    opacity: 0.38;
+}
+
+.dark .zht-uav-grid {
+    background-image: radial-gradient(rgba(125, 211, 252, 0.15) 1px, transparent 1px);
+    opacity: 0.48;
+}
+
+.zht-cad-layer {
+    position: absolute;
+    inset: 0;
+}
+
+.zht-cad-item {
+    position: absolute;
+    margin: 0;
+    opacity: 0.24;
+    transition: opacity 300ms ease;
+    will-change: transform;
+}
+
+.dark .zht-cad-item {
+    opacity: 0.34;
+}
+
+.zht-cad-float {
+    animation: zht-cad-bob 12s ease-in-out infinite alternate;
+}
+
+.zht-cad-item img {
+    display: block;
+    width: 100%;
+    height: auto;
+    filter: hue-rotate(8deg) saturate(1.2) brightness(0.42) contrast(1.15);
+}
+
+.dark .zht-cad-item img {
+    filter: drop-shadow(0 14px 28px rgba(0, 0, 0, 0.55)) contrast(1.06);
+}
+
+/* Left Flank: Clean KEEL MAX Engineering CAD Drawing */
+.zht-cad-keel-max {
+    left: max(-110px, calc(50% - 890px));
+    top: 19%;
+    width: clamp(230px, 21vw, 350px);
+    transform: rotate(-8deg);
+}
+
+@media (max-width: 1360px) {
+    .zht-cad-item {
+        opacity: 0.14;
+    }
+    .dark .zht-cad-item {
+        opacity: 0.2;
+    }
+}
+
+@media (max-width: 1080px) {
+    .zht-cad-layer {
+        display: none;
+    }
+}
+
+@keyframes zht-uav-hover {
+    0%,
+    100% {
+        transform: translate3d(0, 0, 0) rotate(-1deg);
+    }
+    50% {
+        transform: translate3d(0, -5px, 0) rotate(1deg);
+    }
+}
+
+@keyframes zht-pad-breathe {
+    0%,
+    100% {
+        opacity: 0.9;
+        transform: scaleX(1);
+    }
+    50% {
+        opacity: 0.5;
+        transform: scaleX(0.84);
+    }
+}
+
+@keyframes zht-cad-bob {
+    0% {
+        transform: translate3d(0, 0, 0);
+    }
+    100% {
+        transform: translate3d(0, -10px, 0);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .zht-perched-uav-img,
+    .zht-perched-uav-pad,
+    .zht-cad-float {
+        animation: none !important;
+    }
+}

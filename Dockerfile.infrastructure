@@ -12,8 +12,9 @@ FROM --platform=$BUILDPLATFORM alpine:3.22 AS themes
 RUN apk add --no-cache bash ca-certificates curl unzip yq
 WORKDIR /build
 COPY script/fetch-frontends.sh script/
+COPY cmd/dashboard/user-overlay cmd/dashboard/user-overlay/
 COPY service/singleton/frontend-templates.yaml service/singleton/
-RUN mkdir -p cmd/dashboard && bash script/fetch-frontends.sh && rm -rf cmd/dashboard/admin-dist
+RUN mkdir -p cmd/dashboard && bash script/fetch-frontends.sh && rm -rf cmd/dashboard/admin-dist cmd/dashboard/user-overlay
 
 FROM golang:1.26.6-bookworm AS dashboard
 ARG DASHBOARD_VERSION=v2.6.2-infrastructure
